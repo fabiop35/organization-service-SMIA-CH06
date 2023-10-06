@@ -1,0 +1,26 @@
+
+#URL Root
+http://localhost:8081/v1/organization/optima/
+
+###keycloak
+#Get a JWT Token
+curl http://localhost:8080/realms/spmia-realm/protocol/openid-connect/token -u ostock:vbZyXrcADM8dkoOawvfHKFPfBpGpWkWD -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password&username=useradmin&password=password1"
+
+##Access a protected resource using a Token
+#Direct access
+curl http://localhost:8081/v1/organization/optima/ -H "Authorization: bearer $JWT"
+
+#Access through Gateway
+curl http://localhost:8072/organization-service/v1/organization/optima/ -H "Authorization: bearer $JWT"
+
+
+#Post Request Unauthenticated
+curl -X POST http://localhost:8081/v1/organization  -H "Content-Type: application/json" -d '{"id": "001", "name": "FPVSoft", "contactName": "Anibal B", "contactEmail": "anibal@cartago", "contactPhone": "1111111" }' 
+
+#Post request authenticated
+curl -X POST http://localhost:8081/v1/organization  -H "Content-Type: application/json" -d '{"id": "001", "name": "FPVSoft", "contactName": "Anibal B", "contactEmail": "anibal@cartago", "contactPhone": "1111111" }' -H "Authorization: Bearer  $JWT"
+
+
+
+
+

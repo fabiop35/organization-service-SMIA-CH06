@@ -65,6 +65,15 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+        <!-- CH9: Keycload and Spring Security -->
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId> spring-boot-starter-security</artifactId>
+        </dependency>
 		
     </dependencies>
 	
@@ -77,6 +86,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.keycloak.bom</groupId>
+                <artifactId>keycloak-adapter-bom</artifactId>
+                <version>22.0.3</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -85,6 +102,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>                                      
+                    <executable>true</executable>
+                    <jvmArguments>
+                        -Xms64m
+                        -Xmx128m
+                        -XX:+UseSerialGC
+                        -XX:MaxRAM=134m
+                        -XX:MetaspaceSize=138M
+                    </jvmArguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>
