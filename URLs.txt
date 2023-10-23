@@ -2,25 +2,47 @@
 #URL Root
 http://localhost:8081/v1/organization/optima/
 
+#Get v1/organization/{organizationId} - OK
+curl http://localhost:8072/organization-service/v1/organization/77867a01-9dd4-4e39-b312-262059d64662 -H "Authorization: bearer $JWT"
+
 ###keycloak
 #Get a JWT Token
-curl http://localhost:8080/realms/spmia-realm/protocol/openid-connect/token -u ostock:vbZyXrcADM8dkoOawvfHKFPfBpGpWkWD -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password&username=useradmin&password=password1"
+curl http://localhost:8080/realms/spmia-realm/protocol/openid-connect/token -u ostock:NN8Nj6kKsimwMdhbJBx22tRureZEk5Y6 -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password&username=useradmin&password=password1"
 
 ##Access a protected resource using a Token
-#Direct access
-curl http://localhost:8081/v1/organization/optima/ -H "Authorization: bearer $JWT"
+##Direct access
+## GET v1/organization/{organizationId}
+curl http://localhost:8081/v1/organization/77867a01-9dd4-4e39-b312-262059d64662 -H "Authorization: bearer $JWT"
 
-#Access through Gateway
-curl http://localhost:8072/organization-service/v1/organization/optima/ -H "Authorization: bearer $JWT"
+#Access through Gateway - OK
+curl http://localhost:8072/organization-service/v1/organization/77867a01-9dd4-4e39-b312-262059d64662 -H "Authorization: bearer $JWT"
 
 
 #Post Request Unauthenticated
 curl -X POST http://localhost:8081/v1/organization  -H "Content-Type: application/json" -d '{"id": "001", "name": "FPVSoft", "contactName": "Anibal B", "contactEmail": "anibal@cartago", "contactPhone": "1111111" }' 
 
-#Post request authenticated
+#Post request authenticated - create record
 curl -X POST http://localhost:8081/v1/organization  -H "Content-Type: application/json" -d '{"id": "001", "name": "FPVSoft", "contactName": "Anibal B", "contactEmail": "anibal@cartago", "contactPhone": "1111111" }' -H "Authorization: Bearer  $JWT"
 
+#Post, create the organization service record - GW
+curl http://localhost:8072/organization-service/v1/organization/ -H "Content-Type: application/json" -d '{ "name":"optima", "contactName":"Illary Huaylupo","contactEmail":"illaryhs@gmail.com", "contactPhone":"222222"}' -H "Authorization: Bearer  $JWT"
 
+#Post
+curl http://localhost:8072/organization-service/v1/organization/ -H "Content-Type: application/json" -d '{ "name":"optimaGroup", "contactName":"Anibal Barcidas","contactEmail":"anibal@cartago.com", "contactPhone":"2l111"}' -H "Authorization: Bearer $JWT"
+
+#Extract the access token
+TOKEN_RESPONSE=$(curl http://localhost:8080/realms/spmia-realm/protocol/openid-connect/token -u ostock:NN8Nj6kKsimwMdhbJBx22tRureZEk5Y6 -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password&username=useradmin&password=password1") | jq -jn "$TOKEN_RESPONSE.access_token"
+
+
+#calls from licensing service - OK
+http://localhost:8072/organization-service/v1/organization/{organizationId}"
+
+curl http://localhost:8072/organization-service/v1/organization/77867a01-9dd4-4e39-b312-262059d64662 -H "Authorization: bearer $JWT"
+
+#Get Organization By name
+http://localhost:8072/organization-service/v1/organization/name/{name}"
+
+curl http://localhost:8072/organization-service/v1/organization/name/Optima" -H "Authorization: bearer $JWT"
 
 
 

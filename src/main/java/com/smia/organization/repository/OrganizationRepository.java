@@ -10,5 +10,8 @@ import com.smia.organization.model.Organization;
 @Repository
 public interface OrganizationRepository extends CrudRepository<Organization, String> {
 
+    @Override
     public Optional<Organization> findById(String organizationId);
+
+    public Optional<Organization> findByName(String name);
 }

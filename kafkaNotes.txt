@@ -1,0 +1,34 @@
+#Kafka
+# Start the ZooKeeper service
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+# Start the Kafka broker service
+bin/kafka-server-start.sh config/server.properties
+
+#Create a topic
+bin/kafka-topics.sh --create --topic orgChangeTopic --bootstrap-server localhost:9092
+
+#Write some events into thw topic
+bin/kafka-console-producer.sh --topic orgChangeTopic --bootstrap-server localhost:9092
+
+#Read the events
+bin/kafka-console-consumer.sh --topic orgChangeTopic --from-beginning --bootstrap-server localhost:9092
+
+#Purge
+--delete
+
+
+#Message created calling the endpoint directly
+{"type":"com.smia.organization.jms.model.OrganizationChangeModel","action":"CREATED","organizationId":"77867a01-9dd4-4e39-b312-262059d64662","correlationId":null}
+
+#Message Using the gateway service
+{"type":"com.smia.organization.jms.model.OrganizationChangeModel","action":"CREATED","organizationId":"58446487-a1e5-48ac-885e-a8574b82ca24","correlationId":"a665b9b5-a2b3-4991-802a-2203204290cd"}
+
+
+
+
+
+
+
+
+

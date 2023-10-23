@@ -22,6 +22,7 @@ import com.smia.organization.service.OrganizationService;
 @RestController
 @RequestMapping(value = "v1/organization")
 public class OrganizationController {
+
     @Autowired
     private OrganizationService service;
 
@@ -30,6 +31,15 @@ public class OrganizationController {
     public ResponseEntity<Organization> getOrganization(@PathVariable("organizationId") String organizationId) {
         log.info("~~~>OrganizationController.GET.@organizationId: " + organizationId);
         return ResponseEntity.ok(service.findById(organizationId));
+    }
+
+    @RolesAllowed({"ADMIN", "USER"})
+    @RequestMapping(value = "/name/{name}", method = RequestMethod.GET)
+    public ResponseEntity<Organization> getOrganizationByName(@PathVariable("name") String name) {
+
+        log.info("### Controller.getOrganizatiinByName()");
+        return ResponseEntity.ok(service.findByName(name));
+
     }
 
     @RolesAllowed({"ADMIN", "USER"})
